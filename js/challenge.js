@@ -4,7 +4,7 @@ const minusButton = document.getElementById("minus");
 const plusButton = document.getElementById("plus");
 const heartShape = document.getElementById("heart");
 const pauseButton = document.getElementById("pause");
-const likesButton = document.getElementById("likes");
+const likesButton = document.getElementById(".likes");
 const listSection = document.getElementById("list");
 const formComment = document.getElementById("comment-form");
 const inputComment = document.getElementById("comment-input");
@@ -56,8 +56,8 @@ function addLike() {
 function addComment(e) {
     e.preventDefault();
     const p = document.createElement("p");
-    p.innerText = commentInput.value;
-    commentList.appendChild(p);
+    p.innerText = inputComment.value;
+    submitComment.appendChild(p);
 }
 
 //Invoke//
