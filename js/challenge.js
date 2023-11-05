@@ -1,65 +1,83 @@
-//Declare all variables.//
-const counterPiece = document.getElementById("counter");
-const minusButton = document.getElementById("minus");
-const plusButton = document.getElementById("plus");
-const heartShape = document.getElementById("heart");
-const pauseButton = document.getElementById("pause");
-const likesButton = document.getElementById(".likes");
-const listSection = document.getElementById("list");
-const formComment = document.getElementById("comment-form");
-const inputComment = document.getElementById("comment-input");
-const submitComment = document.getElementById("submit");
-let count = 0;
-let paused = false;
-//Add event listeners.//
-minusButton.addEventListener("click", decrementCounter);
-plusButton.addEventListener("click", incrementCounter);
-heartShape.addEventListener("click", addlike);
-formComment.addEventListener("submit", addComment);
-pauseButton.addEventListener("click", function() {
-    paused = !paused;
-    if (paused) {
-        pauseCounter();
-    } else {
-        startCounter();
+// Increment 
+let timeLord 
+start()
+function start() {
+    timeLord = setInterval(processCounter, 1000)
+}
+
+function processCounter() {
+    const counter = document.getElementById('counter')
+    let currentCount = Number(counter.textContent)
+    currentCount++
+    counter.textContent = currentCount
+}
+
+// Likes
+const heart = document.getElementById('heart')
+heart.addEventListener('click',processLikes)
+
+function processLikes(){
+    const likesList = document.querySelector('ul.likes')
+    const currentCounter = document.getElementById('counter').textContent
+
+    const newLi = document.createElement('li')
+    newLi.dataset.dataNum = currentCounter
+    newLi.textContent = `${currentCounter} has been liked 1 time`
+    likesList.append(newLi)
+}
+
+// Plus and Minus
+const plus = document.getElementById('plus')
+const minus = document.getElementById('minus')
+
+plus.addEventListener('click',processPlus)
+minus.addEventListener('click',processMinus)
+
+function processPlus() {
+    const currentCounter = document.getElementById('counter')
+    let newCounter = Number(currentCounter.textContent)
+    newCounter++
+    currentCounter.textContent = newCounter
+}
+
+function processMinus() {
+    const currentCounter = document.getElementById('counter')
+    let newCounter = Number(currentCounter.textContent)
+    newCounter--
+    currentCounter.textContent = newCounter
+}
+
+
+// Pause
+const pause = document.getElementById('pause')
+pause.addEventListener('click',processPause)
+
+function processPause() {
+    const buttons = document.querySelectorAll('button')
+
+    if (this.textContent === ' pause '){
+        buttons.forEach(button => {
+            if(button.textContent ===' pause '){} else{button.disabled = true}})
+        clearInterval(timeLord)
+        this.textContent = ' resume '
     }
-    });
-//Create a function.//
-function counterValue() {
-    counterPiece.innerText = count;
+    else if (this.textContent === ' resume '){
+        buttons.forEach(button => button.disabled = false)
+        start()
+        this.textContent = ' pause '
+    }
 }
 
-function startCounter() {
-    intervalID = setInterval(incrementCounter, 1000);
+// Comments
+const submit = document.getElementById('submit')
+submit.addEventListener('click',processComments)
+
+function processComments(event) {
+    event.preventDefault()
+    const input = document.getElementById('comment-input')
+    const commentList = document.querySelector('div#list.comments')
+    const newP = document.createElement('p')
+
+    newP.textContent = input.value
+    commentList.append(newP)    
 }
-
-function pauseCounter() {
-    clearInterval(internalID);
-}
-
-function incrementCounter() {
-    count++;
-    counterValue;
-}
-
-function decrementCounter() {
-    count--;
-    counterValue;
-}
-
-function addLike() {
-    const li = document.createElement("li");
-    li.innerText = `${count} has been liked`;
-    likesButton.appendChild(li);
-}
-
-function addComment(e) {
-    e.preventDefault();
-    const p = document.createElement("p");
-    p.innerText = inputComment.value;
-    submitComment.appendChild(p);
-}
-
-//Invoke//
-
-startCounter();
